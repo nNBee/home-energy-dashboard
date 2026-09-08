@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import { useEnergySummary } from '../../hooks/api/useEnergySummary.ts';
+import type { EnergyRange } from '../../types/energy.ts';
 import {
   calculateEstimatedCost,
   calculatePercentageChange,
@@ -6,7 +8,8 @@ import {
 import { DashboardPage } from './DashboardPage/DashboardPage.tsx';
 
 export function Dashboard() {
-  const { data, isLoading, isError, error } = useEnergySummary();
+  const [range, setRange] = useState<EnergyRange>('today');
+  const { data, isLoading, isError, error } = useEnergySummary(range);
 
   if (isLoading) {
     return <p>Loading energy summary…</p>;
@@ -35,5 +38,11 @@ export function Dashboard() {
     percentageChange,
   };
 
-  return <DashboardPage summary={summary} />;
+  return (
+    <DashboardPage
+      summary={summary}
+      range={range}
+      onRangeChange={setRange}
+    />
+  );
 }

@@ -1,4 +1,4 @@
-export type EnergyRange = 'day' | 'week' | 'month';
+export type EnergyRange = 'today' | 'week' | 'month';
 
 export type Tariff = {
   pricePerKwh: number;

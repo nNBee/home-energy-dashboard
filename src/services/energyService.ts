@@ -1,7 +1,12 @@
-import type { EnergySummaryResponse } from '../types/energy.ts';
+import type {
+  EnergyRange,
+  EnergySummaryResponse,
+} from '../types/energy.ts';
 
-export async function fetchEnergySummary(): Promise<EnergySummaryResponse> {
-  const response = await fetch('/api/energy/summary');
+export async function fetchEnergySummary(
+  range: EnergyRange,
+): Promise<EnergySummaryResponse> {
+  const response = await fetch(`/api/energy/summary?range=${range}`);
 
   if (!response.ok) {
     throw new Error(`Failed to fetch energy summary: ${response.status}`);
