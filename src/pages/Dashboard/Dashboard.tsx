@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useDeviceEnergyBreakdown } from '../../hooks/api/useDeviceEnergyBreakdown.ts';
 import { useEnergyConsumption } from '../../hooks/api/useEnergyConsumption.ts';
 import { useEnergySummary } from '../../hooks/api/useEnergySummary.ts';
 import type { EnergyRange } from '../../types/energy.ts';
@@ -17,6 +18,12 @@ export function Dashboard() {
     isError: isConsumptionError,
     error: consumptionError,
   } = useEnergyConsumption(range);
+  const {
+    data: deviceBreakdown,
+    isLoading: isDeviceBreakdownLoading,
+    isError: isDeviceBreakdownError,
+    error: deviceBreakdownError,
+  } = useDeviceEnergyBreakdown(range);
 
   if (isLoading) {
     return <p>Loading energy summary…</p>;
@@ -54,6 +61,10 @@ export function Dashboard() {
       isConsumptionLoading={isConsumptionLoading}
       isConsumptionError={isConsumptionError}
       consumptionError={consumptionError}
+      deviceBreakdown={deviceBreakdown}
+      isDeviceBreakdownLoading={isDeviceBreakdownLoading}
+      isDeviceBreakdownError={isDeviceBreakdownError}
+      deviceBreakdownError={deviceBreakdownError}
     />
   );
 }

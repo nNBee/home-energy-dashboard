@@ -21,3 +21,14 @@ export type EnergyConsumptionResponse = {
   range: EnergyRange;
   data: EnergyConsumptionPoint[];
 };
+
+export type DeviceEnergyUsage = {
+  id: string;
+  name: string;
+  consumptionKwh: number;
+};
+
+export type DeviceEnergyBreakdownResponse = {
+  range: EnergyRange;
+  devices: DeviceEnergyUsage[];
+};

@@ -1,10 +1,12 @@
 import { SummaryCard } from '../../../components/UI/SummaryCard/SummaryCard';
 import type {
+  DeviceEnergyBreakdownResponse,
   EnergyConsumptionResponse,
   EnergyRange,
 } from '../../../types/energy.ts';
 import type { DashboardSummary } from '../types';
 import { ConsumptionChart } from './ConsumptionChart.tsx';
+import { DeviceBreakdown } from './DeviceBreakdown.tsx';
 
 type DashboardPageProps = {
   summary: DashboardSummary;
@@ -14,6 +16,10 @@ type DashboardPageProps = {
   isConsumptionLoading: boolean;
   isConsumptionError: boolean;
   consumptionError: Error | null;
+  deviceBreakdown: DeviceEnergyBreakdownResponse | undefined;
+  isDeviceBreakdownLoading: boolean;
+  isDeviceBreakdownError: boolean;
+  deviceBreakdownError: Error | null;
 };
 
 const rangeOptions = [
@@ -30,6 +36,10 @@ export function DashboardPage({
   isConsumptionLoading,
   isConsumptionError,
   consumptionError,
+  deviceBreakdown,
+  isDeviceBreakdownLoading,
+  isDeviceBreakdownError,
+  deviceBreakdownError,
 }: DashboardPageProps) {
   const {
     currentPowerKw,
@@ -93,6 +103,13 @@ export function DashboardPage({
         isLoading={isConsumptionLoading}
         isError={isConsumptionError}
         error={consumptionError}
+      />
+
+      <DeviceBreakdown
+        breakdown={deviceBreakdown}
+        isLoading={isDeviceBreakdownLoading}
+        isError={isDeviceBreakdownError}
+        error={deviceBreakdownError}
       />
     </div>
   );
