@@ -1,11 +1,19 @@
 import { SummaryCard } from '../../../components/UI/SummaryCard/SummaryCard';
-import type { EnergyRange } from '../../../types/energy.ts';
+import type {
+  EnergyConsumptionResponse,
+  EnergyRange,
+} from '../../../types/energy.ts';
 import type { DashboardSummary } from '../types';
+import { ConsumptionChart } from './ConsumptionChart.tsx';
 
 type DashboardPageProps = {
   summary: DashboardSummary;
   range: EnergyRange;
   onRangeChange: (range: EnergyRange) => void;
+  consumption: EnergyConsumptionResponse | undefined;
+  isConsumptionLoading: boolean;
+  isConsumptionError: boolean;
+  consumptionError: Error | null;
 };
 
 const rangeOptions = [
@@ -18,6 +26,10 @@ export function DashboardPage({
   summary,
   range,
   onRangeChange,
+  consumption,
+  isConsumptionLoading,
+  isConsumptionError,
+  consumptionError,
 }: DashboardPageProps) {
   const {
     currentPowerKw,
@@ -74,6 +86,14 @@ export function DashboardPage({
           unit={percentageChange === null ? undefined : '%'}
         />
       </div>
+
+      <ConsumptionChart
+        range={range}
+        consumption={consumption}
+        isLoading={isConsumptionLoading}
+        isError={isConsumptionError}
+        error={consumptionError}
+      />
     </div>
   );
 }

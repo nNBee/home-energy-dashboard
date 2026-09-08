@@ -11,3 +11,13 @@ export type EnergySummaryResponse = {
   previousPeriodConsumptionKwh: number;
   tariff: Tariff;
 };
+
+export type EnergyConsumptionPoint = {
+  timestamp: string;
+  consumptionKwh: number;
+};
+
+export type EnergyConsumptionResponse = {
+  range: EnergyRange;
+  data: EnergyConsumptionPoint[];
+};

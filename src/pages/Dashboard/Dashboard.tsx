@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useEnergyConsumption } from '../../hooks/api/useEnergyConsumption.ts';
 import { useEnergySummary } from '../../hooks/api/useEnergySummary.ts';
 import type { EnergyRange } from '../../types/energy.ts';
 import {
@@ -10,6 +11,12 @@ import { DashboardPage } from './DashboardPage/DashboardPage.tsx';
 export function Dashboard() {
   const [range, setRange] = useState<EnergyRange>('today');
   const { data, isLoading, isError, error } = useEnergySummary(range);
+  const {
+    data: consumption,
+    isLoading: isConsumptionLoading,
+    isError: isConsumptionError,
+    error: consumptionError,
+  } = useEnergyConsumption(range);
 
   if (isLoading) {
     return <p>Loading energy summary…</p>;
@@ -43,6 +50,10 @@ export function Dashboard() {
       summary={summary}
       range={range}
       onRangeChange={setRange}
+      consumption={consumption}
+      isConsumptionLoading={isConsumptionLoading}
+      isConsumptionError={isConsumptionError}
+      consumptionError={consumptionError}
     />
   );
 }
