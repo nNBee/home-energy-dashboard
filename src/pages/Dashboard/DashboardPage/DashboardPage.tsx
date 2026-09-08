@@ -51,15 +51,17 @@ export function DashboardPage({
     <div className='space-y-6'>
       <header className='flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between'>
         <div>
-          <h1 className='text-2xl font-semibold text-slate-900'>Dashboard</h1>
-          <p className='mt-1 text-sm text-slate-500'>
+          <h1 className='text-2xl font-semibold text-slate-900 dark:text-slate-100'>
+            Dashboard
+          </h1>
+          <p className='mt-1 text-sm text-slate-500 dark:text-slate-400'>
             An overview of your current energy usage.
           </p>
         </div>
 
         <div
           aria-label='Energy summary range'
-          className='inline-flex self-start rounded-lg border border-slate-200 bg-white p-1 shadow-sm sm:self-auto'
+          className='inline-flex self-start rounded-lg border border-slate-200 bg-white p-1 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:self-auto'
           role='group'
         >
           {rangeOptions.map((option) => (
@@ -67,10 +69,10 @@ export function DashboardPage({
               key={option.value}
               type='button'
               aria-pressed={range === option.value}
-              className={`rounded-md px-3 py-1.5 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600 ${
+              className={`rounded-md px-3 py-1.5 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600 dark:focus-visible:outline-emerald-400 ${
                 range === option.value
-                  ? 'bg-emerald-50 text-emerald-800'
-                  : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                  ? 'bg-emerald-50 text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-300'
+                  : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100'
               }`}
               onClick={() => onRangeChange(option.value)}
             >
@@ -88,27 +90,27 @@ export function DashboardPage({
           Array.from({ length: 4 }, (_, index) => (
             <div
               key={index}
-              className='min-h-24 animate-pulse rounded-lg border border-slate-200 bg-white p-5 shadow-sm'
+              className='min-h-24 animate-pulse rounded-lg border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900'
             >
-              <div className='h-4 w-24 rounded bg-slate-200' />
-              <div className='mt-3 h-7 w-20 rounded bg-slate-100' />
+              <div className='h-4 w-24 rounded bg-slate-200 dark:bg-slate-700' />
+              <div className='mt-3 h-7 w-20 rounded bg-slate-100 dark:bg-slate-800' />
             </div>
           ))
         ) : isSummaryError ? (
           <div
             role='alert'
-            className='min-h-24 rounded-lg border border-red-100 bg-red-50/60 p-5 md:col-span-2 lg:col-span-4'
+            className='min-h-24 rounded-lg border border-red-100 bg-red-50/60 p-5 dark:border-red-900/50 dark:bg-red-950/30 md:col-span-2 lg:col-span-4'
           >
-            <p className='text-sm font-medium text-red-800'>
+            <p className='text-sm font-medium text-red-800 dark:text-red-300'>
               Energy summary is unavailable
             </p>
-            <p className='mt-1 text-sm text-red-700'>
+            <p className='mt-1 text-sm text-red-700 dark:text-red-400'>
               {summaryError?.message ?? 'Failed to load the energy summary.'}
             </p>
           </div>
         ) : !summary ? (
-          <div className='min-h-24 rounded-lg border border-slate-200 bg-white p-5 md:col-span-2 lg:col-span-4'>
-            <p className='text-sm font-medium text-slate-700'>
+          <div className='min-h-24 rounded-lg border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900 md:col-span-2 lg:col-span-4'>
+            <p className='text-sm font-medium text-slate-700 dark:text-slate-300'>
               No energy summary is available for this period.
             </p>
           </div>

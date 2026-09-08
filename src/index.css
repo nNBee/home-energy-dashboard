@@ -1,1 +1,25 @@
 @import 'tailwindcss';
+
+@custom-variant dark (@media (prefers-color-scheme: dark));
+
+:root {
+  color-scheme: light;
+  --chart-grid: #e2e8f0;
+  --chart-axis: #cbd5e1;
+  --chart-text: #64748b;
+  --chart-tooltip-background: #ffffff;
+  --chart-tooltip-border: #e2e8f0;
+  --chart-tooltip-text: #0f172a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --chart-grid: #1e293b;
+    --chart-axis: #334155;
+    --chart-text: #94a3b8;
+    --chart-tooltip-background: #0f172a;
+    --chart-tooltip-border: #334155;
+    --chart-tooltip-text: #f1f5f9;
+  }
+}

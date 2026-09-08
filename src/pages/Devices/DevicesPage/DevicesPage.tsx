@@ -1,3 +1,7 @@
 export function DevicesPage() {
-  return <h1>Devices</h1>
+  return (
+    <h1 className='text-2xl font-semibold text-slate-900 dark:text-slate-100'>
+      Devices
+    </h1>
+  )
 }

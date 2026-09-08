@@ -1,3 +1,7 @@
 export function EnergyPage() {
-  return <h1>Energy</h1>
+  return (
+    <h1 className='text-2xl font-semibold text-slate-900 dark:text-slate-100'>
+      Energy
+    </h1>
+  )
 }
