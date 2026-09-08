@@ -1,4 +1,8 @@
 import { useEnergySummary } from '../../hooks/api/useEnergySummary.ts';
+import {
+  calculateEstimatedCost,
+  calculatePercentageChange,
+} from '../../utils/energy.ts';
 import { DashboardPage } from './DashboardPage/DashboardPage.tsx';
 
 export function Dashboard() {
@@ -16,5 +20,20 @@ export function Dashboard() {
     return null;
   }
 
-  return <DashboardPage energySummary={data} />;
+  const estimatedCost = calculateEstimatedCost(
+    data.consumptionKwh,
+    data.tariff.pricePerKwh,
+  );
+  const percentageChange = calculatePercentageChange(
+    data.consumptionKwh,
+    data.previousPeriodConsumptionKwh,
+  );
+
+  const summary = {
+    ...data,
+    estimatedCost,
+    percentageChange,
+  };
+
+  return <DashboardPage summary={summary} />;
 }

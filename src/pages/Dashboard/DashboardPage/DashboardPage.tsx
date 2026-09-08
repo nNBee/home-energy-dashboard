@@ -1,23 +1,21 @@
-import type { EnergySummaryResponse } from '../../../types/energy.ts';
-
+import type { DashboardSummary } from '../types';
 type DashboardPageProps = {
-  energySummary: EnergySummaryResponse;
+  summary: DashboardSummary;
 };
 
-export function DashboardPage({ energySummary }: DashboardPageProps) {
+export function DashboardPage({ summary }: DashboardPageProps) {
   return (
     <div>
       <h1>Dashboard</h1>
       <ul>
-        <li>Current power: {energySummary.currentPowerKw} kW</li>
-        <li>Consumption: {energySummary.consumptionKwh} kWh</li>
+        <li>Current power: {summary.currentPowerKw} kW</li>
+        <li>Consumption: {summary.consumptionKwh} kWh</li>
         <li>
-          Previous period consumption:{' '}
-          {energySummary.previousPeriodConsumptionKwh} kWh
+          Previous period consumption: {summary.previousPeriodConsumptionKwh}{' '}
+          kWh
         </li>
         <li>
-          Tariff: {energySummary.tariff.pricePerKwh}{' '}
-          {energySummary.tariff.currency}/kWh
+          Tariff: {summary.tariff.pricePerKwh} {summary.tariff.currency}/kWh
         </li>
       </ul>
     </div>
