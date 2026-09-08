@@ -67,15 +67,35 @@ export function ConsumptionChart({
 
       <div className='mt-6 h-80'>
         {isLoading ? (
-          <p className='text-sm text-slate-500'>Loading consumption data…</p>
+          <div
+            role='status'
+            className='flex h-full animate-pulse flex-col justify-between rounded-md bg-slate-50 px-6 py-8'
+          >
+            {Array.from({ length: 5 }, (_, index) => (
+              <div key={index} className='h-px w-full bg-slate-200' />
+            ))}
+            <span className='sr-only'>Loading consumption data…</span>
+          </div>
         ) : isError ? (
-          <p className='text-sm text-red-700'>
-            Failed to load consumption data: {error?.message}
-          </p>
+          <div
+            role='alert'
+            className='flex h-full items-center justify-center rounded-md bg-red-50/60 px-6 text-center'
+          >
+            <div>
+              <p className='text-sm font-medium text-red-800'>
+                Consumption data is unavailable
+              </p>
+              <p className='mt-1 text-sm text-red-700'>
+                {error?.message ?? 'Failed to load consumption data.'}
+              </p>
+            </div>
+          </div>
         ) : !consumption || consumption.data.length === 0 ? (
-          <p className='text-sm text-slate-500'>
-            No consumption data is available for this period.
-          </p>
+          <div className='flex h-full items-center justify-center rounded-md bg-slate-50 px-6 text-center'>
+            <p className='text-sm text-slate-600'>
+              No consumption data is available for this period.
+            </p>
+          </div>
         ) : (
           <ResponsiveContainer width='100%' height='100%'>
             <LineChart

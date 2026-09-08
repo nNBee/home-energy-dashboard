@@ -9,7 +9,10 @@ import { ConsumptionChart } from './ConsumptionChart.tsx';
 import { DeviceBreakdown } from './DeviceBreakdown.tsx';
 
 type DashboardPageProps = {
-  summary: DashboardSummary;
+  summary: DashboardSummary | undefined;
+  isSummaryLoading: boolean;
+  isSummaryError: boolean;
+  summaryError: Error | null;
   range: EnergyRange;
   onRangeChange: (range: EnergyRange) => void;
   consumption: EnergyConsumptionResponse | undefined;
@@ -30,6 +33,9 @@ const rangeOptions = [
 
 export function DashboardPage({
   summary,
+  isSummaryLoading,
+  isSummaryError,
+  summaryError,
   range,
   onRangeChange,
   consumption,
@@ -41,14 +47,6 @@ export function DashboardPage({
   isDeviceBreakdownError,
   deviceBreakdownError,
 }: DashboardPageProps) {
-  const {
-    currentPowerKw,
-    consumptionKwh,
-    estimatedCost,
-    percentageChange,
-    tariff,
-  } = summary;
-
   return (
     <div className='space-y-6'>
       <header className='flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between'>
@@ -82,19 +80,66 @@ export function DashboardPage({
         </div>
       </header>
 
-      <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4'>
-        <SummaryCard label='Current power' value={currentPowerKw} unit='kW' />
-        <SummaryCard label='Consumption' value={consumptionKwh} unit='kWh' />
-        <SummaryCard
-          label='Estimated cost'
-          value={estimatedCost.toFixed(2)}
-          unit={tariff.currency}
-        />
-        <SummaryCard
-          label='Change vs previous period'
-          value={percentageChange === null ? '—' : percentageChange.toFixed(2)}
-          unit={percentageChange === null ? undefined : '%'}
-        />
+      <div
+        aria-busy={isSummaryLoading}
+        className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4'
+      >
+        {isSummaryLoading ? (
+          Array.from({ length: 4 }, (_, index) => (
+            <div
+              key={index}
+              className='min-h-24 animate-pulse rounded-lg border border-slate-200 bg-white p-5 shadow-sm'
+            >
+              <div className='h-4 w-24 rounded bg-slate-200' />
+              <div className='mt-3 h-7 w-20 rounded bg-slate-100' />
+            </div>
+          ))
+        ) : isSummaryError ? (
+          <div
+            role='alert'
+            className='min-h-24 rounded-lg border border-red-100 bg-red-50/60 p-5 md:col-span-2 lg:col-span-4'
+          >
+            <p className='text-sm font-medium text-red-800'>
+              Energy summary is unavailable
+            </p>
+            <p className='mt-1 text-sm text-red-700'>
+              {summaryError?.message ?? 'Failed to load the energy summary.'}
+            </p>
+          </div>
+        ) : !summary ? (
+          <div className='min-h-24 rounded-lg border border-slate-200 bg-white p-5 md:col-span-2 lg:col-span-4'>
+            <p className='text-sm font-medium text-slate-700'>
+              No energy summary is available for this period.
+            </p>
+          </div>
+        ) : (
+          <>
+            <SummaryCard
+              label='Current power'
+              value={summary.currentPowerKw}
+              unit='kW'
+            />
+            <SummaryCard
+              label='Consumption'
+              value={summary.consumptionKwh}
+              unit='kWh'
+            />
+            <SummaryCard
+              label='Estimated cost'
+              value={summary.estimatedCost.toFixed(2)}
+              unit={summary.tariff.currency}
+            />
+            <SummaryCard
+              label='Change vs previous period'
+              value={
+                summary.percentageChange === null
+                  ? '—'
+                  : summary.percentageChange.toFixed(2)
+              }
+              unit={summary.percentageChange === null ? undefined : '%'}
+            />
+          </>
+        )}
       </div>
 
       <ConsumptionChart

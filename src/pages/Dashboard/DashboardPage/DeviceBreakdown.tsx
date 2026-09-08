@@ -42,15 +42,46 @@ export function DeviceBreakdown({
 
       <div className='mt-6'>
         {isLoading ? (
-          <p className='text-sm text-slate-500'>Loading device usage…</p>
+          <div role='status'>
+            <ul
+              aria-hidden='true'
+              className='grid grid-cols-1 gap-x-10 gap-y-6 md:grid-cols-2'
+            >
+              {Array.from({ length: 4 }, (_, index) => (
+                <li key={index} className='animate-pulse'>
+                  <div className='flex items-center justify-between gap-4'>
+                    <div className='h-4 w-28 rounded bg-slate-200' />
+                    <div className='h-4 w-16 rounded bg-slate-100' />
+                  </div>
+                  <div className='mt-3 flex items-center gap-3'>
+                    <div className='h-2 flex-1 rounded-full bg-slate-100' />
+                    <div className='h-3 w-12 rounded bg-slate-100' />
+                  </div>
+                </li>
+              ))}
+            </ul>
+            <span className='sr-only'>Loading device usage…</span>
+          </div>
         ) : isError ? (
-          <p className='text-sm text-red-700'>
-            Failed to load device usage: {error?.message}
-          </p>
+          <div
+            role='alert'
+            className='flex min-h-28 items-center justify-center rounded-md bg-red-50/60 px-6 text-center'
+          >
+            <div>
+              <p className='text-sm font-medium text-red-800'>
+                Device usage is unavailable
+              </p>
+              <p className='mt-1 text-sm text-red-700'>
+                {error?.message ?? 'Failed to load device usage.'}
+              </p>
+            </div>
+          </div>
         ) : devices.length === 0 ? (
-          <p className='text-sm text-slate-500'>
-            No device usage is available for this period.
-          </p>
+          <div className='flex min-h-28 items-center justify-center rounded-md bg-slate-50 px-6 text-center'>
+            <p className='text-sm text-slate-600'>
+              No device usage is available for this period.
+            </p>
+          </div>
         ) : (
           <ul className='grid grid-cols-1 gap-x-10 gap-y-6 md:grid-cols-2'>
             {devices.map((device) => {

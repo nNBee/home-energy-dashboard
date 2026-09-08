@@ -1,4 +1,4 @@
-import { http, HttpResponse } from 'msw';
+import { delay, http, HttpResponse } from 'msw';
 import type { EnergyRange } from '../types/energy.ts';
 import { energyConsumption } from './data/consumption.ts';
 import { deviceEnergyBreakdowns } from './data/devices.ts';
@@ -23,7 +23,8 @@ export const handlers = [
 
     return HttpResponse.json(energyConsumption[range]);
   }),
-  http.get('/api/energy/devices', ({ request }) => {
+  http.get('/api/energy/devices', async ({ request }) => {
+    await delay(1000); // Simulate network delay
     const url = new URL(request.url);
     const rangeParam = url.searchParams.get('range');
 
