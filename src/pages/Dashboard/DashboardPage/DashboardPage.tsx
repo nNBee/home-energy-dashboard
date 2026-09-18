@@ -1,4 +1,5 @@
 import { ConsumptionChart } from '../../../components/energy/ConsumptionChart/ConsumptionChart.tsx';
+import { DeviceBreakdown } from '../../../components/energy/DeviceBreakdown/DeviceBreakdown.tsx';
 import { EnergyRangeSelector } from '../../../components/energy/EnergyRangeSelector/EnergyRangeSelector.tsx';
 import { SummaryCard } from '../../../components/UI/SummaryCard/SummaryCard';
 import type {
@@ -7,7 +8,6 @@ import type {
   EnergyRange,
 } from '../../../types/energy.ts';
 import type { DashboardSummary } from '../types';
-import { DeviceBreakdown } from './DeviceBreakdown.tsx';
 
 type DashboardPageProps = {
   summary: DashboardSummary | undefined;
