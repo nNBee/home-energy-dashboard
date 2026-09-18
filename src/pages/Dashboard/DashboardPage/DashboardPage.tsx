@@ -1,3 +1,5 @@
+import { ConsumptionChart } from '../../../components/energy/ConsumptionChart/ConsumptionChart.tsx';
+import { EnergyRangeSelector } from '../../../components/energy/EnergyRangeSelector/EnergyRangeSelector.tsx';
 import { SummaryCard } from '../../../components/UI/SummaryCard/SummaryCard';
 import type {
   DeviceEnergyBreakdownResponse,
@@ -5,7 +7,6 @@ import type {
   EnergyRange,
 } from '../../../types/energy.ts';
 import type { DashboardSummary } from '../types';
-import { ConsumptionChart } from './ConsumptionChart.tsx';
 import { DeviceBreakdown } from './DeviceBreakdown.tsx';
 
 type DashboardPageProps = {
@@ -24,12 +25,6 @@ type DashboardPageProps = {
   isDeviceBreakdownError: boolean;
   deviceBreakdownError: Error | null;
 };
-
-const rangeOptions = [
-  { label: 'Today', value: 'today' },
-  { label: 'Week', value: 'week' },
-  { label: 'Month', value: 'month' },
-] satisfies ReadonlyArray<{ label: string; value: EnergyRange }>;
 
 export function DashboardPage({
   summary,
@@ -59,27 +54,11 @@ export function DashboardPage({
           </p>
         </div>
 
-        <div
-          aria-label='Energy summary range'
-          className='inline-flex self-start rounded-lg border border-slate-200 bg-white p-1 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:self-auto'
-          role='group'
-        >
-          {rangeOptions.map((option) => (
-            <button
-              key={option.value}
-              type='button'
-              aria-pressed={range === option.value}
-              className={`rounded-md px-3 py-1.5 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600 dark:focus-visible:outline-emerald-400 ${
-                range === option.value
-                  ? 'bg-emerald-50 text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-300'
-                  : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100'
-              }`}
-              onClick={() => onRangeChange(option.value)}
-            >
-              {option.label}
-            </button>
-          ))}
-        </div>
+        <EnergyRangeSelector
+          value={range}
+          onChange={onRangeChange}
+          ariaLabel='Energy summary range'
+        />
       </header>
 
       <div
