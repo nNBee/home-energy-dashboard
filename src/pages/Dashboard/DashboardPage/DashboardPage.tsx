@@ -123,13 +123,13 @@ export function DashboardPage({
             />
             <SummaryCard
               label='Consumption'
-              value={summary.consumptionKwh}
+              value={summary.consumptionKwh.toFixed(1)}
               unit='kWh'
               icon={<Zap aria-hidden='true' size={20} strokeWidth={1.75} />}
             />
             <SummaryCard
               label='Estimated cost'
-              value={summary.estimatedCost.toFixed(2)}
+              value={summary.estimatedCost.toFixed(0)}
               unit={summary.tariff.currency}
               icon={
                 <WalletCards

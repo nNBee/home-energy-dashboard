@@ -143,7 +143,7 @@ export function ConsumptionChart({
                   formatTimestamp(String(timestamp))
                 }
                 formatter={(value) => [
-                  `${Number(value).toFixed(2)} kWh`,
+                  `${Number(value).toFixed(1)} kWh`,
                   'Consumption',
                 ]}
               />

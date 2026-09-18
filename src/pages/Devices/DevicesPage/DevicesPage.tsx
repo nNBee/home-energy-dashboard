@@ -73,7 +73,7 @@ export function DevicesPage({
         />
       </header>
 
-      <div aria-busy={isLoading} className='max-w-sm'>
+      <div aria-busy={isLoading}>
         {isLoading ? (
           <div className='min-h-24 animate-pulse rounded-lg border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900'>
             <div className='h-4 w-36 rounded bg-slate-200 dark:bg-slate-700' />
@@ -100,7 +100,7 @@ export function DevicesPage({
         ) : (
           <SummaryCard
             label='Total device consumption'
-            value={totalDeviceConsumptionKwh.toFixed(2)}
+            value={totalDeviceConsumptionKwh.toFixed(1)}
             unit='kWh'
             icon={<Zap aria-hidden='true' size={20} strokeWidth={1.75} />}
           />

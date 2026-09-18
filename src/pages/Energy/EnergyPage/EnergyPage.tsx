@@ -94,13 +94,13 @@ export function EnergyPage({
           <>
             <SummaryCard
               label={statisticsLabels.total}
-              value={statistics.totalConsumptionKwh.toFixed(2)}
+              value={statistics.totalConsumptionKwh.toFixed(1)}
               unit='kWh'
               icon={<Zap aria-hidden='true' size={20} strokeWidth={1.75} />}
             />
             <SummaryCard
               label={statisticsLabels.average}
-              value={statistics.averageConsumptionKwh.toFixed(2)}
+              value={statistics.averageConsumptionKwh.toFixed(1)}
               unit='kWh'
               icon={
                 <ChartNoAxesColumnIncreasing
@@ -112,7 +112,7 @@ export function EnergyPage({
             />
             <SummaryCard
               label={statisticsLabels.peak}
-              value={statistics.peakConsumptionKwh.toFixed(2)}
+              value={statistics.peakConsumptionKwh.toFixed(1)}
               unit='kWh'
               icon={<Gauge aria-hidden='true' size={20} strokeWidth={1.75} />}
             />
