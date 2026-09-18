@@ -1,3 +1,5 @@
+**Live demo:** https://home-energy-dashboard-seven.vercel.app/
+
 # Home Energy Dashboard
 
 Home Energy Dashboard is a responsive frontend application for visualizing household electricity consumption, costs, trends, and device-level energy usage.
@@ -21,16 +23,16 @@ The application currently uses Mock Service Worker (MSW) to provide a realistic 
 
 ## Tech Stack
 
-| Area | Technology |
-| --- | --- |
-| UI | React, TypeScript, Tailwind CSS |
-| Build tooling | Vite |
-| Routing | React Router |
-| Server state | TanStack Query |
-| Data visualization | Recharts |
-| Mock API | Mock Service Worker |
-| Testing | Vitest, React Testing Library, jsdom |
-| Icons | Lucide React |
+| Area               | Technology                           |
+| ------------------ | ------------------------------------ |
+| UI                 | React, TypeScript, Tailwind CSS      |
+| Build tooling      | Vite                                 |
+| Routing            | React Router                         |
+| Server state       | TanStack Query                       |
+| Data visualization | Recharts                             |
+| Mock API           | Mock Service Worker                  |
+| Testing            | Vitest, React Testing Library, jsdom |
+| Icons              | Lucide React                         |
 
 ## Architecture
 
@@ -115,7 +117,21 @@ npm run build
 
 ## Screenshots
 
-<!-- TODO: Add final application screenshots here. -->
+### Dashboard
+
+![Home Energy Dashboard](./docs/screenshots/dashboard-dark.png)
+
+### Energy details
+
+![Energy consumption details](./docs/screenshots/energy-light.png)
+
+### Responsive device breakdown
+
+<img
+  src="./docs/screenshots/devices-mobile.png"
+  alt="Device consumption on mobile"
+  width="390"
+/>
 
 ## Future Improvements
 
