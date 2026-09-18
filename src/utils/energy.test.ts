@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { calculateEstimatedCost, calculatePercentageChange } from './energy';
+import type { EnergyConsumptionResponse } from '../types/energy.ts';
+import {
+  calculateConsumptionStatistics,
+  calculateEstimatedCost,
+  calculatePercentageChange,
+} from './energy';
 
 describe('calculateEstimatedCost', () => {
   it('calculates the estimated cost from consumption and price', () => {
@@ -26,5 +31,37 @@ describe('calculatePercentageChange', () => {
 
   it('returns null when the previous value is 0', () => {
     expect(calculatePercentageChange(10, 0)).toBeNull();
+  });
+});
+
+describe('calculateConsumptionStatistics', () => {
+  it('calculates total, average, and peak consumption', () => {
+    const consumption = {
+      range: 'today',
+      data: [
+        { timestamp: '2026-09-18T08:00:00.000Z', consumptionKwh: 1.2 },
+        { timestamp: '2026-09-18T09:00:00.000Z', consumptionKwh: 2.6 },
+        { timestamp: '2026-09-18T10:00:00.000Z', consumptionKwh: 0.8 },
+      ],
+    } satisfies EnergyConsumptionResponse;
+
+    expect(calculateConsumptionStatistics(consumption)).toEqual({
+      totalConsumptionKwh: 4.6,
+      averageConsumptionKwh: 4.6 / 3,
+      peakConsumptionKwh: 2.6,
+    });
+  });
+
+  it('returns zero values for an empty dataset', () => {
+    const consumption = {
+      range: 'today',
+      data: [],
+    } satisfies EnergyConsumptionResponse;
+
+    expect(calculateConsumptionStatistics(consumption)).toEqual({
+      totalConsumptionKwh: 0,
+      averageConsumptionKwh: 0,
+      peakConsumptionKwh: 0,
+    });
   });
 });
