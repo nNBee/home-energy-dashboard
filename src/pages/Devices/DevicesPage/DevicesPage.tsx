@@ -1,4 +1,3 @@
-import { DeviceBreakdown } from '../../../components/energy/DeviceBreakdown/DeviceBreakdown.tsx';
 import { EnergyRangeSelector } from '../../../components/energy/EnergyRangeSelector/EnergyRangeSelector.tsx';
 import { SummaryCard } from '../../../components/UI/SummaryCard/SummaryCard.tsx';
 import type {
@@ -25,7 +24,12 @@ export function DevicesPage({
   isError,
   error,
 }: DevicesPageProps) {
-  const hasNoDeviceData = !breakdown || breakdown.devices.length === 0;
+  const devices = breakdown
+    ? [...breakdown.devices].sort(
+        (first, second) => second.consumptionKwh - first.consumptionKwh,
+      )
+    : [];
+  const hasNoDeviceData = devices.length === 0;
 
   return (
     <div className='space-y-6'>
@@ -79,12 +83,109 @@ export function DevicesPage({
         )}
       </div>
 
-      <DeviceBreakdown
-        breakdown={breakdown}
-        isLoading={isLoading}
-        isError={isError}
-        error={error}
-      />
+      <section aria-labelledby='device-consumption-title'>
+        <div>
+          <h2
+            id='device-consumption-title'
+            className='text-lg font-semibold text-slate-900 dark:text-slate-100'
+          >
+            Device consumption
+          </h2>
+          <p className='mt-1 text-sm text-slate-500 dark:text-slate-400'>
+            Each device&apos;s share of consumption for the selected period.
+          </p>
+        </div>
+
+        <div className='mt-6'>
+          {isLoading ? (
+            <div role='status'>
+              <ul
+                aria-hidden='true'
+                className='grid grid-cols-1 gap-4 md:grid-cols-2'
+              >
+                {Array.from({ length: 4 }, (_, index) => (
+                  <li
+                    key={index}
+                    className='min-h-44 animate-pulse rounded-lg border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900'
+                  >
+                    <div className='h-4 w-28 rounded bg-slate-200 dark:bg-slate-700' />
+                    <div className='mt-6 h-8 w-24 rounded bg-slate-100 dark:bg-slate-800' />
+                    <div className='mt-2 h-4 w-16 rounded bg-slate-100 dark:bg-slate-800' />
+                    <div className='mt-5 h-2.5 w-full rounded-full bg-slate-100 dark:bg-slate-800' />
+                  </li>
+                ))}
+              </ul>
+              <span className='sr-only'>Loading device usage…</span>
+            </div>
+          ) : isError ? (
+            <div
+              role='alert'
+              className='flex min-h-44 items-center justify-center rounded-lg border border-red-100 bg-red-50/60 px-6 text-center dark:border-red-900/50 dark:bg-red-950/30'
+            >
+              <div>
+                <p className='text-sm font-medium text-red-800 dark:text-red-300'>
+                  Device usage is unavailable
+                </p>
+                <p className='mt-1 text-sm text-red-700 dark:text-red-400'>
+                  {error?.message ?? 'Failed to load device usage.'}
+                </p>
+              </div>
+            </div>
+          ) : hasNoDeviceData || totalDeviceConsumptionKwh === undefined ? (
+            <div className='flex min-h-44 items-center justify-center rounded-lg border border-slate-200 bg-white px-6 text-center dark:border-slate-800 dark:bg-slate-900'>
+              <p className='text-sm text-slate-600 dark:text-slate-400'>
+                No device usage is available for this period.
+              </p>
+            </div>
+          ) : (
+            <ul className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+              {devices.map((device) => {
+                const percentage =
+                  totalDeviceConsumptionKwh === 0
+                    ? 0
+                    : (device.consumptionKwh /
+                        totalDeviceConsumptionKwh) *
+                      100;
+
+                return (
+                  <li
+                    key={device.id}
+                    className='rounded-lg border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900'
+                  >
+                    <h3 className='text-base font-medium text-slate-900 dark:text-slate-100'>
+                      {device.name}
+                    </h3>
+
+                    <p className='mt-5 flex items-baseline gap-1 text-3xl font-semibold tabular-nums text-slate-900 dark:text-slate-100'>
+                      {device.consumptionKwh.toFixed(1)}
+                      <span className='text-sm font-medium text-slate-500 dark:text-slate-400'>
+                        kWh
+                      </span>
+                    </p>
+                    <p className='mt-1 text-sm font-medium tabular-nums text-slate-500 dark:text-slate-400'>
+                      {percentage.toFixed(1)}% of total consumption
+                    </p>
+
+                    <div
+                      role='progressbar'
+                      aria-label={`${device.name} share of total device consumption`}
+                      aria-valuemin={0}
+                      aria-valuemax={100}
+                      aria-valuenow={percentage}
+                      className='mt-5 h-2.5 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-700'
+                    >
+                      <div
+                        className='h-full rounded-full bg-emerald-500'
+                        style={{ width: `${percentage}%` }}
+                      />
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </div>
+      </section>
     </div>
   );
 }
