@@ -1,3 +1,11 @@
+import {
+  Heater,
+  Plug,
+  PlugZap,
+  ShowerHead,
+  Snowflake,
+  Zap,
+} from 'lucide-react';
 import { EnergyRangeSelector } from '../../../components/energy/EnergyRangeSelector/EnergyRangeSelector.tsx';
 import { SummaryCard } from '../../../components/UI/SummaryCard/SummaryCard.tsx';
 import type {
@@ -14,6 +22,21 @@ type DevicesPageProps = {
   isError: boolean;
   error: Error | null;
 };
+
+function getDeviceIcon(deviceId: string) {
+  switch (deviceId) {
+    case 'heat-pump':
+      return Heater;
+    case 'water-heater':
+      return ShowerHead;
+    case 'air-conditioner':
+      return Snowflake;
+    case 'other':
+      return PlugZap;
+    default:
+      return Plug;
+  }
+}
 
 export function DevicesPage({
   range,
@@ -79,6 +102,7 @@ export function DevicesPage({
             label='Total device consumption'
             value={totalDeviceConsumptionKwh.toFixed(2)}
             unit='kWh'
+            icon={<Zap aria-hidden='true' size={20} strokeWidth={1.75} />}
           />
         )}
       </div>
@@ -140,6 +164,7 @@ export function DevicesPage({
           ) : (
             <ul className='grid grid-cols-1 gap-4 md:grid-cols-2'>
               {devices.map((device) => {
+                const DeviceIcon = getDeviceIcon(device.id);
                 const percentage =
                   totalDeviceConsumptionKwh === 0
                     ? 0
@@ -152,9 +177,18 @@ export function DevicesPage({
                     key={device.id}
                     className='rounded-lg border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900'
                   >
-                    <h3 className='text-base font-medium text-slate-900 dark:text-slate-100'>
-                      {device.name}
-                    </h3>
+                    <div className='flex items-start justify-between gap-4'>
+                      <h3 className='text-base font-medium text-slate-900 dark:text-slate-100'>
+                        {device.name}
+                      </h3>
+                      <span className='flex size-9 shrink-0 items-center justify-center rounded-md bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400'>
+                        <DeviceIcon
+                          aria-hidden='true'
+                          size={20}
+                          strokeWidth={1.75}
+                        />
+                      </span>
+                    </div>
 
                     <p className='mt-5 flex items-baseline gap-1 text-3xl font-semibold tabular-nums text-slate-900 dark:text-slate-100'>
                       {device.consumptionKwh.toFixed(1)}

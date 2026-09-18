@@ -1,3 +1,4 @@
+import { ChartNoAxesColumnIncreasing, Gauge, Zap } from 'lucide-react';
 import { ConsumptionChart } from '../../../components/energy/ConsumptionChart/ConsumptionChart.tsx';
 import { EnergyRangeSelector } from '../../../components/energy/EnergyRangeSelector/EnergyRangeSelector.tsx';
 import { SummaryCard } from '../../../components/UI/SummaryCard/SummaryCard.tsx';
@@ -95,16 +96,25 @@ export function EnergyPage({
               label={statisticsLabels.total}
               value={statistics.totalConsumptionKwh.toFixed(2)}
               unit='kWh'
+              icon={<Zap aria-hidden='true' size={20} strokeWidth={1.75} />}
             />
             <SummaryCard
               label={statisticsLabels.average}
               value={statistics.averageConsumptionKwh.toFixed(2)}
               unit='kWh'
+              icon={
+                <ChartNoAxesColumnIncreasing
+                  aria-hidden='true'
+                  size={20}
+                  strokeWidth={1.75}
+                />
+              }
             />
             <SummaryCard
               label={statisticsLabels.peak}
               value={statistics.peakConsumptionKwh.toFixed(2)}
               unit='kWh'
+              icon={<Gauge aria-hidden='true' size={20} strokeWidth={1.75} />}
             />
           </>
         )}

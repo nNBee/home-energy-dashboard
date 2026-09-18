@@ -1,3 +1,10 @@
+import {
+  Gauge,
+  TrendingDown,
+  TrendingUp,
+  WalletCards,
+  Zap,
+} from 'lucide-react';
 import { ConsumptionChart } from '../../../components/energy/ConsumptionChart/ConsumptionChart.tsx';
 import { DeviceBreakdown } from '../../../components/energy/DeviceBreakdown/DeviceBreakdown.tsx';
 import { EnergyRangeSelector } from '../../../components/energy/EnergyRangeSelector/EnergyRangeSelector.tsx';
@@ -25,6 +32,19 @@ type DashboardPageProps = {
   isDeviceBreakdownError: boolean;
   deviceBreakdownError: Error | null;
 };
+
+function getPeriodChangeIcon(percentageChange: number | null) {
+  if (percentageChange === null) {
+    return undefined;
+  }
+
+  const PeriodChangeIcon =
+    percentageChange < 0 ? TrendingDown : TrendingUp;
+
+  return (
+    <PeriodChangeIcon aria-hidden='true' size={20} strokeWidth={1.75} />
+  );
+}
 
 export function DashboardPage({
   summary,
@@ -99,16 +119,25 @@ export function DashboardPage({
               label='Current power'
               value={summary.currentPowerKw}
               unit='kW'
+              icon={<Gauge aria-hidden='true' size={20} strokeWidth={1.75} />}
             />
             <SummaryCard
               label='Consumption'
               value={summary.consumptionKwh}
               unit='kWh'
+              icon={<Zap aria-hidden='true' size={20} strokeWidth={1.75} />}
             />
             <SummaryCard
               label='Estimated cost'
               value={summary.estimatedCost.toFixed(2)}
               unit={summary.tariff.currency}
+              icon={
+                <WalletCards
+                  aria-hidden='true'
+                  size={20}
+                  strokeWidth={1.75}
+                />
+              }
             />
             <SummaryCard
               label='Change vs previous period'
@@ -118,6 +147,7 @@ export function DashboardPage({
                   : summary.percentageChange.toFixed(2)
               }
               unit={summary.percentageChange === null ? undefined : '%'}
+              icon={getPeriodChangeIcon(summary.percentageChange)}
             />
           </>
         )}
