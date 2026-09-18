@@ -8,7 +8,10 @@ import { router } from './pages/router.tsx';
 const queryClient = new QueryClient();
 
 async function enableMocking() {
-  if (!import.meta.env.DEV) {
+  const shouldEnableMocking =
+    import.meta.env.DEV || import.meta.env.VITE_ENABLE_MSW === 'true';
+
+  if (!shouldEnableMocking) {
     return;
   }
 
